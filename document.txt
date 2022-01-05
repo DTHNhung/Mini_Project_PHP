@@ -1,0 +1,5 @@
+Một số các tiêu chuẩn chung:
+- Sử dụng mô hình MVC:
+    + View:
+    + Controller:
+    + Model:
