@@ -1,10 +1,8 @@
 <?php
-    require 'common/Controller.php';
-    require 'common/Core.php';
-    require 'common/Database.php';
-
-    require 'config/config.php';
-
-    // instantiate core class
-    $init = new Core();
-?>
+//Require libraries from folder libraries
+require_once 'common/Core.php';
+require_once 'common/Controller.php';
+require_once 'common/Database.php';
+require_once 'config/config.php';
+require_once 'helpers/session_helper.php';
+$init = new Core();

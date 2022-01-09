@@ -1,16 +1,15 @@
 <?php
-    // database params
-    define('DB_HOST','localhost');
-    define('DB_USER','root');
-    define('DB_PASS','');
-    define('DB_NAME','mini_project_php');
+define("DB_HOST", "localhost");
+define("DB_USER", "root");
+define("DB_PASS", "");
+define("DB_NAME", "mini_project");
 
-    // APPROOT
-    define('APPROOT', dirname(dirname(__FILE__)));
+// Đường dẫn trỏ đến thư mục app
+define('APPROOT', dirname(dirname(__FILE__)));
 
-    // URL - Dynamic links
-    define('URLROOT', 'localhost:8080/Mini_Project_PHP');
+//URLROOT (Dynamic links)
+//lấy đường dẫn cho tiện
+define('URLROOT', 'http://localhost/Mini_Project_PHP');
 
-    // Sitename
-    define('SITENAME', 'Mini Project PHP');
-?>
+//Sitename
+define('SITENAME', 'Mini_Project_PHP');
