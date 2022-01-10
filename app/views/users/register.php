@@ -1,8 +1,6 @@
 <?php
 require APPROOT . '/views/includes/head.php';
 ?>
-​
-​
 <form action="<?php echo URLROOT; ?>/users/register" style="border:1px solid #ccc" method="post">
     <div class="container">
         <h1>Register</h1>
@@ -27,10 +25,11 @@ require APPROOT . '/views/includes/head.php';
         <div class="invalidFeedback">
             <?php if (isset($data['confirmPasswordError'])) echo $data['confirmPasswordError']; ?>
         </div>
-​
-​
+
+
+        <br>
         <div class="clearfix">
-            <button type="submit" class="signupbtn">Register</button>
+            <button type="submit" class="signupbtn" style="width:100%">Register</button>
         </div>
     </div>
 </form>

@@ -1,10 +1,11 @@
 <?php
 require APPROOT . '/views/includes/head.php';
+$helper = new Helper();
 ?>
 
 <body>
     <?php
-    if (isLoggedIn() == false) {
+    if ($helper->authenToken() == null) {
         header('location:' . URLROOT . '/users/login');
     }
 

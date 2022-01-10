@@ -40,16 +40,28 @@ class Users extends Controller
             //Check if all errors are empty
             if (empty($data['usernameError']) && empty($data['passwordError'])) {
                 $loggedInUser = $this->userModel->login($data['username'], $data['password']);
-                if (isset($_POST['remember'])) {
-                    setcookie('username', $data['username'], time() + 60 * 60 * 24);
-                    // setcookie('password', $data['password'], time() + 60 * 60 * 24);
-                    setcookie('password',  $data['password'], time() + 60 * 60 * 24);
-                } else {
-                    setcookie('username', '', time() - 1);
-                    setcookie('password', '', time() - 1);
-                }
+                // if (isset($_POST['remember'])) {
+                //     setcookie('username', $data['username'], time() + 60 * 60 * 24);
+                //     // setcookie('password', $data['password'], time() + 60 * 60 * 24);
+                //     setcookie('password',  $data['password'], time() + 60 * 60 * 24);
+                // } else {
+                //     setcookie('username', '', time() - 1);
+                //     setcookie('password', '', time() - 1);
+                // }
+
+                // else {
+                //     setcookie('username', '', time() - 1);
+                //     setcookie('password', '', time() - 1);
+                // }
                 if ($loggedInUser) {
-                    $this->createUserSession($loggedInUser);
+                    if (isset($_POST['remember'])) {
+                        $token = md5($data['username'] . time());
+                        setcookie('token', $token, time() +  7 * 24 * 60 * 60, '/', '');
+                        $this->userModel->createToken($loggedInUser->user_id, $token);
+                        $this->createUserSession($loggedInUser);
+                    } else {
+                        $this->createUserSession($loggedInUser);
+                    }
                 } else {
                     $data['passwordError'] = 'Password or username is incorrect. Please try again.';
 
@@ -168,6 +180,8 @@ class Users extends Controller
         unset($_SESSION['user_id']);
         unset($_SESSION['username']);
         unset($_SESSION['email']);
+        setcookie('token', '', time() - 7 * 24 * 60 * 60, '/');
+        session_destroy();
         header('location:' . URLROOT . '/users/login');
     }
 }
