@@ -31,14 +31,20 @@ class User
             return false;
         }
     }
+    
     public function register($data)
     {
-        $this->db->query('INSERT INTO tbl_users ( user_email, user_password,user_name) VALUES( :email, :password,:username)');
+        $this->db->query('INSERT INTO tbl_users ( user_email, user_password, user_name, user_avatar, created_at, updated_at)
+                VALUES( :email, :password,:username, :fileName, :created_at, :updated_at)');
 
         //Bind values
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':password', $data['password']);
+        $this->db->bind(':fileName', $data['fileName']);
+        $this->db->bind(':created_at', $data['created_at']);
+        $this->db->bind(':updated_at', $data['updated_at']);
+
 
         //Execute function
         if ($this->db->execute()) {
@@ -52,13 +58,14 @@ class User
     public function findUserByEmail($email)
     {
         //Prepared statement
-        $this->db->query('SELECT * FROM tbl_users WHERE user_email = :email');
+        $this->db->query('SELECT * FROM tbl_users WHERE BINARY :email LIKE user_email');
 
         //Email param will be binded with the email variable
         $this->db->bind(':email', $email);
 
+        $row = $this->db->single();
         //Check if email is already registered
-        if ($this->db->rowCount() > 0) {
+        if ($row != null) {
             return true;
         } else {
             return false;

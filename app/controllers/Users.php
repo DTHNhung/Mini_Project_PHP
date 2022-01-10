@@ -66,6 +66,7 @@ class Users extends Controller
         }
         $this->view('users/login', $data);
     }
+
     public function register()
     {
         $data = [
@@ -84,16 +85,27 @@ class Users extends Controller
             // Sanitize POST data
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
+            $file = $_FILES['file'];
+
             $data = [
                 'username' => trim($_POST['username']),
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
                 'confirmPassword' => trim($_POST['confirmPassword']),
+                'fileName' => $_FILES['file']['name'], 
                 'usernameError' => '',
                 'emailError' => '',
                 'passwordError' => '',
-                'confirmPasswordError' => ''
+                'confirmPasswordError' => '',
+                'fileError' => '',
+                'created_at' => '',
+                'updated_at' => '',
+                'flag' => ''
             ];
+
+            date_default_timezone_set('Asia/Bangkok');
+            $data['created_at'] = date("Y-m-d H:i:s");
+            $data['updated_at'] = $data['created_at'] ;
 
             $nameValidation = "/^[a-zA-Z0-9]*$/";
             $passwordValidation = "/^(.{0,7}|[^a-z]*|[^\d]*)$/i";
@@ -101,8 +113,10 @@ class Users extends Controller
             //Validate username on letters/numbers
             if (empty($data['username'])) {
                 $data['usernameError'] = 'Please enter username.';
+            }elseif (strlen($data['username']) < 4 || strlen($data['username']) > 64) {
+                $data['usernameError'] = 'Username must be between 4 and 64 characters in length.';
             } elseif (!preg_match($nameValidation, $data['username'])) {
-                $data['usernameError'] = 'Name can only contain letters and numbers.';
+                $data['usernameError'] = 'Username can only contain letters and numbers.';
             }
 
             //Validate email
@@ -120,35 +134,62 @@ class Users extends Controller
             // Validate password on length, numeric values,
             if (empty($data['password'])) {
                 $data['passwordError'] = 'Please enter password.';
-            } elseif (strlen($data['password']) < 6) {
-                $data['passwordError'] = 'Password must be at least 8 characters';
+            } elseif (strlen($data['password']) < 6 || strlen($data['password']) > 100) {
+                $data['passwordError'] = 'Password must be between 6 and 100 characters in length.';
             } elseif (preg_match($passwordValidation, $data['password'])) {
-                $data['passwordError'] = 'Password must be have at least one numeric value.';
+                $data['passwordError'] = 'Password must be have at least one non-numeric value.';
             }
 
             //Validate confirm password
             if (empty($data['confirmPassword'])) {
                 $data['confirmPasswordError'] = 'Please enter password.';
-            } else {
-                if ($data['password'] != $data['confirmPassword']) {
-                    $data['confirmPasswordError'] = 'Passwords do not match, please try again.';
-                }
+            } elseif ($data['password'] != $data['confirmPassword']) {
+                $data['confirmPasswordError'] = 'Passwords do not match, please try again.';
             }
 
-            if (empty($data['usernameError']) && empty($data['emailError']) && empty($data['passwordError']) && empty($data['confirmPasswordError'])) {
+            //Validate file image
+            $fileName = $_FILES['file']['name'];
+            $fileTmpName = $_FILES['file']['tmp_name'];
+            $fileSize = $_FILES['file']['size'];
+            $fileError = $_FILES['file']['error'];
+
+            $fileExt = explode('.', $fileName);
+            $fileActualExt = strtolower(end($fileExt));
+
+            $allowed = array('jpg', 'jpeg', 'png', 'pdf');
+
+            if (!in_array($fileActualExt, $allowed)) {
+                $data['fileError'] = 'You cannot upload files of this type.';
+            } elseif ($fileError != 0) {
+                    $data['fileError'] = 'There was an error uploading your file.';
+            } elseif ($fileSize > 1000000) {
+                    $data['fileError'] = 'File is too big.';
+            }
+
+            if (empty($data['usernameError']) && empty($data['emailError']) &&
+                empty($data['passwordError']) && empty($data['confirmPasswordError']) &&
+                empty($data['fileError'])) {
 
                 // Hash password
                 // $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
                 $data['password'] = md5(md5($data['password']));
 
+                // generates a unique ID based on the microtime 
+                $data['fileName'] = uniqid('', true) . '.' . $fileActualExt;
 
-                //Register user from model function
-                if ($this->userModel->register($data)) {
-                    //Redirect to the login page
-                    header('location: ' . URLROOT . '/users/login');
-                } else {
-                    die('Something went wrong.');
+                //move file new avatar to img/avatar/ 
+                $fileDestination = PUBLICROOT . '/img/avatar/' . $data['fileName'];
+                if(move_uploaded_file($fileTmpName, $fileDestination)) {
+                    //Register user from model function
+                    if ($this->userModel->register($data)) {
+                        //Redirect to the login page
+                        header('location: ' . URLROOT . '/users/login');
+                    } else {
+                        die('Something went wrong.');
+                    }
                 }
+
+                
             }
         }
         $this->view('users/register', $data);
