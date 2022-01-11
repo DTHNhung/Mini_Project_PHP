@@ -127,7 +127,8 @@ class Pages extends Controller
     public function delete()
     {
         $username = $this->params[0];
-
+        $result = $this->pageModel->getDataByUser($username);
+        unlink(PUBLICROOT . '/img/avatar/' . $result->user_avatar);
         $this->pageModel->delete($username);
         header('location: ' . URLROOT . '/pages/index');
     }

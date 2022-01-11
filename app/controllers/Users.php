@@ -7,7 +7,7 @@ class Users extends Controller
         $this->pageModel = $this->model('Page');
     }
 
-    public function login()
+    public function index()
     {
         $data = [
             'title' => 'Login page',
@@ -53,7 +53,7 @@ class Users extends Controller
                 } else {
                     $data['passwordError'] = 'Password or username is incorrect. Please try again.';
 
-                    $this->view('users/login', $data);
+                    $this->view('users/index', $data);
                 }
             }
         } else {
@@ -64,7 +64,7 @@ class Users extends Controller
                 'passwordError' => ''
             ];
         }
-        $this->view('users/login', $data);
+        $this->view('users/index', $data);
     }
 
     public function register()
@@ -161,7 +161,7 @@ class Users extends Controller
                     //Register user from model function
                     if ($this->userModel->register($data)) {
                         //Redirect to the login page
-                        header('location: ' . URLROOT . '/users/login');
+                        header('location: ' . URLROOT . '/users/index');
                     } else {
                         die('Something went wrong.');
                     }
@@ -187,6 +187,6 @@ class Users extends Controller
         unset($_SESSION['email']);
         setcookie('token', '', time() - 7 * 24 * 60 * 60, '/');
         session_destroy();
-        header('location:' . URLROOT . '/users/login');
+        header('location:' . URLROOT . '/users/index');
     }
 }

@@ -32,11 +32,11 @@ class Controller extends Core
     public function username($username)
     {
         $error = '';
-        $nameValidation = "/^[a-zA-Z0-9]*$/";// xem lai
+        $nameValidation = "/^[a-zA-Z0-9]*$/"; // xem lai
         //Validate username on letters/numbers
         if (empty($username)) {
             $error = 'Please enter username.';
-        }elseif (strlen($username) < 4 || strlen($username) > 64) {
+        } elseif (strlen($username) < 4 || strlen($username) > 64) {
             $error = 'Username must be between 4 and 64 characters in length.';
         } elseif (!preg_match($nameValidation, $username)) {
             $error = 'Username can only contain letters and numbers.';
@@ -53,7 +53,7 @@ class Controller extends Core
             $error = 'Please enter password.';
         } elseif (strlen($password) < 6 || strlen($password) > 100) {
             $error = 'Password must be between 6 and 100 characters in length.';
-        } elseif (preg_match($passwordValidation, $password)) {
+        } elseif (preg_match($password, $passwordValidation)) {
             $error = 'Password must be have at least one letter and one number';
         }
         return $error;

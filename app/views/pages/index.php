@@ -6,7 +6,7 @@ $helper = new Helper();
 <body>
     <?php
     if ($helper->authenToken() == null) {
-        header('location:' . URLROOT . '/users/login');
+        header('location:' . URLROOT . '/users/index');
     }
     ?>
     <div class="container">

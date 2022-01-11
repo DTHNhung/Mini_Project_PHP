@@ -12,7 +12,7 @@ $helper = new Helper();
     }
     ?>
 
-    <form action="<?php echo URLROOT; ?>/users/login" method="post">
+    <form action="<?php echo URLROOT; ?>/users/index" method="post">
 
         <div class="container">
             <h2>Login Form</h2>

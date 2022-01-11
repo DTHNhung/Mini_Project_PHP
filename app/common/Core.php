@@ -8,7 +8,7 @@ class Core
 {
     //Nếu không có controller nào trong được lấy từ url thì sẽ default là controller Pages
     protected $currentController = 'users';
-    protected $currentMethod = 'login';
+    protected $currentMethod = 'index';
     protected $params = [];
 
     public function __construct()
