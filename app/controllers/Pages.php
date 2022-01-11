@@ -27,7 +27,7 @@ class Pages extends Controller
             'oldPassword' => '',
             'newPassword' => '',
             'confirmPassword' => '',
-            'fileName' => $tmp['user_avatar'], 
+            'fileName' => $tmp['user_avatar'],
             'usernameError' => '',
             'oldPasswordError' => '',
             'newPasswordError' => '',
@@ -48,7 +48,7 @@ class Pages extends Controller
                 'oldPassword' => trim($_POST['oldPassword']),
                 'newPassword' => trim($_POST['newPassword']),
                 'confirmPassword' => trim($_POST['confirmPassword']),
-                'fileName' => $_FILES['file']['name'], 
+                'fileName' => $_FILES['file']['name'],
                 'usernameError' => '',
                 'oldPasswordError' => '',
                 'newPasswordError' => '',
@@ -60,7 +60,7 @@ class Pages extends Controller
             $data['usernameError'] = $this->username($data['username']);
             if ($data['usernameError'] == '' && $data['username'] != $tmp['user_name']) {
                 $result = $this->pageModel->getDataByUser($data['username']);
-                if ($result != NULL){
+                if ($result != NULL) {
                     $data['usernameError'] = 'Username is already taken.';
                 }
             }
@@ -75,45 +75,49 @@ class Pages extends Controller
             if ($data['newPassword'] != '') {
                 $data['newPasswordError'] = $this->password($data['newPassword']);
 
-                if ($data['newPasswordError'] == '' && 
-                    $data['newPassword'] == $data['oldPassword']) {
+                if (
+                    $data['newPasswordError'] == '' &&
+                    $data['newPassword'] == $data['oldPassword']
+                ) {
                     $data['newPasswordError'] = 'You used old password.';
                 } else {
-                    $data['confirmPasswordError'] = $this->
-                        confirmPassword($data['newPassword'], $data['confirmPassword']);
+                    $data['confirmPasswordError'] = $this->confirmPassword($data['newPassword'], $data['confirmPassword']);
                 }
-                
             }
-            
+
             $data['fileError'] = $this->image($_FILES['file']);
 
-            if (empty($data['usernameError']) && empty($data['oldPasswordError']) &&
+            if (
+                empty($data['usernameError']) && empty($data['oldPasswordError']) &&
                 empty($data['newPasswordError']) && empty($data['confirmPasswordError']) &&
-                empty($data['fileError'])) {
+                empty($data['fileError'])
+            ) {
 
-                    if ($data['newPassword'] == '') {
-                        $data['newPassword'] = md5(md5($data['oldPassword']));
-                    } else {
-                        $data['newPassword'] = md5(md5($data['newPassword']));
-                    }
+                if ($data['newPassword'] == '') {
+                    $data['newPassword'] = md5(md5($data['oldPassword']));
+                } else {
+                    $data['newPassword'] = md5(md5($data['newPassword']));
+                }
 
-                    $fileExt = explode('.', $data['fileName']);
-                    $fileActualExt = strtolower(end($fileExt));
-                    // generates a unique ID based on the microtime 
-                    $data['fileName'] = uniqid('', true) . '.' . $fileActualExt;
+                $fileExt = explode('.', $data['fileName']);
+                $fileActualExt = strtolower(end($fileExt));
+                // generates a unique ID based on the microtime 
+                $data['fileName'] = uniqid('', true) . '.' . $fileActualExt;
 
-                    date_default_timezone_set('Asia/Bangkok');
-                    $data['updated'] = date("Y-m-d H:i:s");
+                date_default_timezone_set('Asia/Bangkok');
+                $data['updated'] = date("Y-m-d H:i:s");
 
-                    //move file new avatar to img/avatar/ 
-                    $fileDestination = PUBLICROOT . '/img/avatar/' . $data['fileName'];
-                    if (move_uploaded_file($_FILES['file']['tmp_name'], $fileDestination) &&
-                            unlink(PUBLICROOT . '/img/avatar/' . $tmp['user_avatar'])) {
-                        $this->pageModel->update($data);
-                        header('location: ' . URLROOT . '/pages/index');
-                    } else {
-                        die('Something went wrong.');
-                    }
+                //move file new avatar to img/avatar/ 
+                $fileDestination = PUBLICROOT . '/img/avatar/' . $data['fileName'];
+                if (
+                    move_uploaded_file($_FILES['file']['tmp_name'], $fileDestination) &&
+                    unlink(PUBLICROOT . '/img/avatar/' . $tmp['user_avatar'])
+                ) {
+                    $this->pageModel->update($data);
+                    header('location: ' . URLROOT . '/pages/index');
+                } else {
+                    die('Something went wrong.');
+                }
             }
         }
         $this->view('pages/edit', $data);
@@ -121,9 +125,11 @@ class Pages extends Controller
 
     public function delete()
     {
-        $data = [
-            '' => ''
-        ];
-        $this->view('pages/index', $data);
+        if (isset($_GET['username'])) {
+            $username = $_GET['username'];
+        }
+
+        $this->pageModel->delete($username);
+        header('location: ' . URLROOT . '/pages/index');
     }
 }
