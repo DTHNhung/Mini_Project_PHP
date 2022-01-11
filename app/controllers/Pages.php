@@ -22,7 +22,7 @@ class Pages extends Controller
     {
         $tmp = get_object_vars($this->pageModel->getDataByUser($this->params[0]));
         $data = [
-            'email' => $tmp['user_email'],
+            'id' => $tmp['user_id'],
             'username' => $tmp['user_name'],
             'oldPassword' => '',
             'newPassword' => '',
@@ -43,7 +43,7 @@ class Pages extends Controller
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
             $data = [
-                'email' => $tmp['user_email'],
+                'id' => $tmp['user_id'],
                 'username' => trim($_POST['username']),
                 'oldPassword' => trim($_POST['oldPassword']),
                 'newPassword' => trim($_POST['newPassword']),
@@ -105,11 +105,13 @@ class Pages extends Controller
                     date_default_timezone_set('Asia/Bangkok');
                     $data['updated'] = date("Y-m-d H:i:s");
 
+                    // print_r($data);
                     //move file new avatar to img/avatar/ 
                     $fileDestination = PUBLICROOT . '/img/avatar/' . $data['fileName'];
                     if (move_uploaded_file($_FILES['file']['tmp_name'], $fileDestination) &&
-                            unlink(PUBLICROOT . '/img/avatar/' . $tmp['user_avatar'])) {
-                        $this->pageModel->update($data);
+                            unlink(PUBLICROOT . '/img/avatar/' . $tmp['user_avatar']) &&
+                            $this->pageModel->update($data)) {
+                        // $this->pageModel->update($data)
                         header('location: ' . URLROOT . '/pages/index');
                     } else {
                         die('Something went wrong.');
