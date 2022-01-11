@@ -1,12 +1,13 @@
 <?php
 require APPROOT . '/views/includes/head.php';
+$helper = new Helper();
 ?>
 
 <body>
 
-    <h2>Login Form</h2>
     <?php
-    if (isLoggedIn()) {
+
+    if ($helper->authenToken() != null) {
         header('location:' . URLROOT . '/pages/index');
     }
     ?>
@@ -14,18 +15,19 @@ require APPROOT . '/views/includes/head.php';
     // echo $COOKIE['username'];
     ?>
     <form action="<?php echo URLROOT; ?>/users/login" method="post">
-        <div class="imgcontainer">
-            <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Avatar" class="avatar">
-        </div>
 
         <div class="container">
+            <h2>Login Form</h2>
+            <div class="imgcontainer">
+                <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Avatar" class="avatar">
+            </div>
             <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter username" value="<?php echo (isset($_COOKIE['username'])) ? $_COOKIE['username'] : '';  ?>" name="username" required>
+            <input type="text" placeholder="Enter username" value="" name="username" required>
             <div class="invalidFeedback">
                 <?php echo $data['usernameError'] ?>
             </div>
             <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" value="<?php echo (isset($_COOKIE['password'])) ? $_COOKIE['password'] : '';  ?>" name=" password" required>
+            <input type="password" placeholder="Enter Password" value="" name=" password" required>
             <div class="invalidFeedback">
                 <?php echo $data['passwordError'] ?>
             </div>

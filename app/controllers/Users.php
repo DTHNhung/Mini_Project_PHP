@@ -40,16 +40,15 @@ class Users extends Controller
             //Check if all errors are empty
             if (empty($data['usernameError']) && empty($data['passwordError'])) {
                 $loggedInUser = $this->userModel->login($data['username'], $data['password']);
-                if (isset($_POST['remember'])) {
-                    setcookie('username', $data['username'], time() + 60 * 60 * 24);
-                    // setcookie('password', $data['password'], time() + 60 * 60 * 24);
-                    setcookie('password',  $data['password'], time() + 60 * 60 * 24);
-                } else {
-                    setcookie('username', '', time() - 1);
-                    setcookie('password', '', time() - 1);
-                }
                 if ($loggedInUser) {
-                    $this->createUserSession($loggedInUser);
+                    if (isset($_POST['remember'])) {
+                        $token = md5($data['username'] . time());
+                        setcookie('token', $token, time() +  7 * 24 * 60 * 60, '/', '');
+                        $this->userModel->createToken($loggedInUser->user_id, $token);
+                        $this->createUserSession($loggedInUser);
+                    } else {
+                        $this->createUserSession($loggedInUser);
+                    }
                 } else {
                     $data['passwordError'] = 'Password or username is incorrect. Please try again.';
 
@@ -74,7 +73,7 @@ class Users extends Controller
             'email' => '',
             'password' => '',
             'confirmPassword' => '',
-            'fileName' => '', 
+            'fileName' => '',
             'usernameError' => '',
             'emailError' => '',
             'passwordError' => '',
@@ -94,7 +93,7 @@ class Users extends Controller
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
                 'confirmPassword' => trim($_POST['confirmPassword']),
-                'fileName' => $_FILES['file']['name'], 
+                'fileName' => $_FILES['file']['name'],
                 'usernameError' => '',
                 'emailError' => '',
                 'passwordError' => '',
@@ -106,7 +105,7 @@ class Users extends Controller
 
             date_default_timezone_set('Asia/Bangkok');
             $data['created_at'] = date("Y-m-d H:i:s");
-            $data['updated_at'] = $data['created_at'] ;
+            $data['updated_at'] = $data['created_at'];
 
             $nameValidation = "/^[a-zA-Z0-9]*$/";
             $passwordValidation = "/^(.{0,7}|[^a-z]*|[^\d]*)$/i";
@@ -114,7 +113,7 @@ class Users extends Controller
             //Validate username on letters/numbers
             if (empty($data['username'])) {
                 $data['usernameError'] = 'Please enter username.';
-            }elseif (strlen($data['username']) < 4 || strlen($data['username']) > 64) {
+            } elseif (strlen($data['username']) < 4 || strlen($data['username']) > 64) {
                 $data['usernameError'] = 'Username must be between 4 and 64 characters in length.';
             } elseif (!preg_match($nameValidation, $data['username'])) {
                 $data['usernameError'] = 'Username can only contain letters and numbers.';
@@ -162,14 +161,16 @@ class Users extends Controller
             if (!in_array($fileActualExt, $allowed)) {
                 $data['fileError'] = 'You cannot upload files of this type.';
             } elseif ($fileError != 0) {
-                    $data['fileError'] = 'There was an error uploading your file.';
+                $data['fileError'] = 'There was an error uploading your file.';
             } elseif ($fileSize > 1000000) {
-                    $data['fileError'] = 'File is too big.';
+                $data['fileError'] = 'File is too big.';
             }
 
-            if (empty($data['usernameError']) && empty($data['emailError']) &&
+            if (
+                empty($data['usernameError']) && empty($data['emailError']) &&
                 empty($data['passwordError']) && empty($data['confirmPasswordError']) &&
-                empty($data['fileError'])) {
+                empty($data['fileError'])
+            ) {
 
                 // Hash password
                 // $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -180,7 +181,7 @@ class Users extends Controller
 
                 //move file new avatar to img/avatar/ 
                 $fileDestination = PUBLICROOT . '/img/avatar/' . $data['fileName'];
-                if(move_uploaded_file($fileTmpName, $fileDestination)) {
+                if (move_uploaded_file($fileTmpName, $fileDestination)) {
                     //Register user from model function
                     if ($this->userModel->register($data)) {
                         //Redirect to the login page
@@ -189,8 +190,6 @@ class Users extends Controller
                         die('Something went wrong.');
                     }
                 }
-
-                
             }
         }
         $this->view('users/register', $data);
@@ -210,6 +209,8 @@ class Users extends Controller
         unset($_SESSION['user_id']);
         unset($_SESSION['username']);
         unset($_SESSION['email']);
+        setcookie('token', '', time() - 7 * 24 * 60 * 60, '/');
+        session_destroy();
         header('location:' . URLROOT . '/users/login');
     }
 }

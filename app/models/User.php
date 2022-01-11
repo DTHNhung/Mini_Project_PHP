@@ -31,7 +31,7 @@ class User
             return false;
         }
     }
-    
+
     public function register($data)
     {
         $this->db->query('INSERT INTO tbl_users ( user_email, user_password, user_name,
@@ -51,7 +51,33 @@ class User
             return false;
         }
     }
+    public function createToken($user_id, $token)
+    {
+        $this->db->query('INSERT INTO tbl_logins_token (user_id, token) values (:userid,:token)');
 
+        $this->db->bind(':userid', $user_id);
+        $this->db->bind(':token', $token);
+
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function findUserByToken($token)
+    {
+
+        $this->db->query('SELECT tbl_users.* FROM tbl_users,tbl_logins_token where tbl_users.user_id = tbl_logins_token.user_id and tbl_logins_token.token=:token');
+        //Bind value
+        $this->db->bind(':token', $token);
+        $row = $this->db->single();
+        if ($row != null) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
     //Find user by email. Email is passed in by the Controller.
     public function findUserByEmail($email)
     {

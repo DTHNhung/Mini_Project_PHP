@@ -10,8 +10,7 @@ define('APPROOT', dirname(dirname(__FILE__)));
 define('PUBLICROOT', dirname(dirname(dirname(__FILE__))) . '/public');
 
 //URLROOT (Dynamic links)
-//lấy đường dẫn cho tiện
-define('URLROOT', 'http://localhost:8080/Mini_Project_PHP');
+define('URLROOT', 'http://localhost/Mini_Project_PHP');
 
 //Sitename
 define('SITENAME', 'Mini_Project_PHP');
