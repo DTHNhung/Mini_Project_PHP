@@ -7,17 +7,18 @@
 class Core
 {
     //Nếu không có controller nào trong được lấy từ url thì sẽ default là controller Pages
-    protected $currentController = 'Users';
+    protected $currentController = 'users';
     protected $currentMethod = 'login';
     protected $params = [];
 
     public function __construct()
     {
+        //print_r($this->getUrl());
 
         $url = $this->getUrl();
 
         // Look in BLL for first value
-        if (isset($url[0]) && file_exists('../app/controllers/' . ucwords($url[0]) . '.php')) {
+        if (file_exists('../app/controllers/' . ucwords($url[0]) . '.php')) {
             // If exists, set as controller
             $this->currentController = ucwords($url[0]);
             // Unset 0 Index
