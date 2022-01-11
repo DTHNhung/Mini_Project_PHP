@@ -126,9 +126,7 @@ class Pages extends Controller
 
     public function delete()
     {
-        if (isset($_GET['username'])) {
-            $username = $_GET['username'];
-        }
+        $username = $this->params[0];
 
         $this->pageModel->delete($username);
         header('location: ' . URLROOT . '/pages/index');
