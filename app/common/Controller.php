@@ -47,14 +47,14 @@ class Controller extends Core
     public function password($password)
     {
         $error = '';
-        $passwordValidation = "/^(.{0,7}|[^a-z]*|[^\d]*)$/i";
+        $passwordValidation = "/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$/gm";
         // Validate password on length, numeric values,
         if (empty($password)) {
             $error = 'Please enter password.';
         } elseif (strlen($password) < 6 || strlen($password) > 100) {
             $error = 'Password must be between 6 and 100 characters in length.';
         } elseif (preg_match($passwordValidation, $password)) {
-            $error = 'Password must be have at least one non-numeric value.';
+            $error = 'Password must be have at least one letter and one number';
         }
         return $error;
     }

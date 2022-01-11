@@ -107,7 +107,6 @@ class Pages extends Controller
                 date_default_timezone_set('Asia/Bangkok');
                 $data['updated'] = date("Y-m-d H:i:s");
 
-                // print_r($data);
                 //move file new avatar to img/avatar/ 
                 $fileDestination = PUBLICROOT . '/img/avatar/' . $data['fileName'];
                 if (
