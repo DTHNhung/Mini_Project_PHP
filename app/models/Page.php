@@ -50,4 +50,3 @@ class Page
         return $this->db->single();
     }
 }
-?>

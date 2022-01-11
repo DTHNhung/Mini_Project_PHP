@@ -94,5 +94,11 @@ class User
         } else {
             return false;
         }
+        //Check if email is already registered
+        // if ($this->db->rowCount() > 0) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
     }
 }

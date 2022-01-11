@@ -1,7 +1,6 @@
 <?php
 require APPROOT . '/views/includes/head.php';
 $helper = new Helper();
-
 ?>
 
 <body>

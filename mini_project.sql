@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
+<<<<<<< HEAD
 -- Thời gian đã tạo: Th1 11, 2022 lúc 03:42 PM
+=======
+-- Thời gian đã tạo: Th1 10, 2022 lúc 04:03 PM
+>>>>>>> d152dbe84888825ab7a79355d1fd1044f454cead
 -- Phiên bản máy phục vụ: 10.4.20-MariaDB
 -- Phiên bản PHP: 7.3.29
 
@@ -64,9 +68,13 @@ CREATE TABLE `tbl_users` (
 INSERT INTO `tbl_users` (`user_id`, `user_email`, `user_password`, `user_name`, `user_avatar`, `created_at`, `updated_at`) VALUES
 (6, 'khieutrung12@gmail.com', '6c7fafe5183d45bbb5df575ae54549b8', 'thaihung', NULL, NULL, NULL),
 (7, 'khieutrung1@gmail.com', '6c7fafe5183d45bbb5df575ae54549b8', 'thaihung1109', NULL, NULL, NULL),
+<<<<<<< HEAD
 (10, 'khieutrung1234@gmail.com', '6c7fafe5183d45bbb5df575ae54549b8', 'thaihungxyz', NULL, NULL, NULL),
 (11, 'khieutrung12345@gmail.com', '6c7fafe5183d45bbb5df575ae54549b8', 'thaihung', '61dd8e8e61eff4.84282346.jpg', '2022-01-11 21:05:02', '2022-01-11 21:05:02'),
 (12, 'khieutrung12321@gmail.com', '6c7fafe5183d45bbb5df575ae54549b8', 'thaihung', '61dd92db3b9541.65154207.jpg', '2022-01-11 21:23:23', '2022-01-11 21:23:23');
+=======
+(10, 'khieutrung1234@gmail.com', '6c7fafe5183d45bbb5df575ae54549b8', 'thaihungxyz', NULL, NULL, NULL);
+>>>>>>> d152dbe84888825ab7a79355d1fd1044f454cead
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -92,13 +100,21 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT cho bảng `tbl_logins_token`
 --
 ALTER TABLE `tbl_logins_token`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+>>>>>>> d152dbe84888825ab7a79355d1fd1044f454cead
 
 --
 -- AUTO_INCREMENT cho bảng `tbl_users`
 --
 ALTER TABLE `tbl_users`
+<<<<<<< HEAD
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+=======
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+>>>>>>> d152dbe84888825ab7a79355d1fd1044f454cead
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

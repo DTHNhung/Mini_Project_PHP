@@ -11,9 +11,7 @@ $helper = new Helper();
         header('location:' . URLROOT . '/pages/index');
     }
     ?>
-    <?php
-    // echo $COOKIE['username'];
-    ?>
+
     <form action="<?php echo URLROOT; ?>/users/login" method="post">
 
         <div class="container">
