@@ -17,6 +17,11 @@ $helper = new Helper();
     <form action="<?php echo URLROOT; ?>/users/login" method="post">
 
         <div class="container">
+            <?php if ($helper->authenToken() == null)
+                echo 'hung';
+            else echo $_SESSION['user_id'];
+            echo $_SESSION['user_id'];
+            ?>
             <h2>Login Form</h2>
             <div class="imgcontainer">
                 <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Avatar" class="avatar">

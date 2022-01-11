@@ -8,52 +8,60 @@ $helper = new Helper();
     if ($helper->authenToken() == null) {
         header('location:' . URLROOT . '/users/login');
     }
-
+    echo $_SESSION['user_id'];
     ?>
     <div class="container">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h2 class="text-center">Users Management</h2>
-                <a href="<?php echo URLROOT; ?>/users/logout">Logout</a>
+                <h2 class="text-center">Users Management (<a href="<?php echo URLROOT; ?>/users/logout">Thái Hùng</a>)</h2>
+                <?php
+                if (isset($_SESSION['user_id'])) {
+                ?>
+                    <h1><a href="<?php echo URLROOT; ?>/users/logout">Logout</a></h1>
+                <?php } else { ?>
+                    <h1><a href="<?php echo URLROOT; ?>/users/login">Login</a></h1>
+                <?php } ?>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>User Name</th>
                             <th>Email</th>
-                            <th>Avatar</th>
+                            <th>Address</th>
                             <th></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        if (isset($data['info'])) {
-                            for($i = 0; $i < sizeOf($data['info']); $i++) {
-                                $row = get_object_vars($data['info'][$i]);
-                        ?>
+
                         <tr>
-                            <td><?php echo $i+1; ?></td>
-                            <td><?php echo $row['user_name']; ?></td>
-                            <td><?php echo $row['user_email']; ?></td>
-                            <td><img src="<?php echo URLROOT . '/public/img/avatar/' . $row['user_avatar']; ?>" 
-                                width='56px'></td>
-                            <td>
-                                <button class="btn btn-warning">Edit</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger">Delete</button>
-                            </td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                            <td><button class="btn btn-warning">Edit</button></td>
+                            <td><button class="btn btn-danger" onclick="deleteUser(1)">Delete</button></td>
                         </tr>
-                        <?php
-                            }
-                        }
-                        ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function deleteUser(id) {
+            var option = confirm('Ban co chac chan muon xoa thong tin nguoi dung khong???')
+            if (!option) return
+            //cái này đang sử dụng api
+            $.post('form/form-user.php', {
+                'action': 'delete',
+                'id': id
+            }, function(data) {
+                location.reload()
+            })
+        }
+    </script>
 </body>

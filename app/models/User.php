@@ -31,20 +31,14 @@ class User
             return false;
         }
     }
-
     public function register($data)
     {
-        $this->db->query('INSERT INTO tbl_users ( user_email, user_password, user_name, user_avatar, created_at, updated_at)
-                VALUES( :email, :password,:username, :fileName, :created_at, :updated_at)');
+        $this->db->query('INSERT INTO tbl_users ( user_email, user_password,user_name) VALUES( :email, :password,:username)');
 
         //Bind values
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':email', $data['email']);
         $this->db->bind(':password', $data['password']);
-        $this->db->bind(':fileName', $data['fileName']);
-        $this->db->bind(':created_at', $data['created_at']);
-        $this->db->bind(':updated_at', $data['updated_at']);
-
 
         //Execute function
         if ($this->db->execute()) {
@@ -76,7 +70,7 @@ class User
         // $this->db->query('SELECT tbl_users.* FROM tbl_logins_token,tbl_users WHERE 
         //     tbl_users.user_id = tbl_login_tokens.user_id
         // and token = :token');
-        $this->db->query('SELECT tbl_users.* FROM tbl_users,tbl_logins_token where tbl_users.user_id = tbl_logins_token.user_id and token=:token');
+        $this->db->query('SELECT tbl_users.* FROM tbl_users,tbl_logins_token where tbl_users.user_id = tbl_logins_token.user_id and tbl_logins_token.token=:token');
         //Bind value
         $this->db->bind(':token', $token);
         $row = $this->db->single();
@@ -100,7 +94,7 @@ class User
     public function findUserByEmail($email)
     {
         //Prepared statement
-        $this->db->query('SELECT * FROM tbl_users WHERE BINARY :email LIKE user_email');
+        $this->db->query('SELECT * FROM tbl_users WHERE user_email = :email');
 
         //Email param will be binded with the email variable
         $this->db->bind(':email', $email);
