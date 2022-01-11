@@ -78,6 +78,20 @@ class User
             return false;
         }
     }
+
+    public function deleteToken($token)
+    {
+
+        $this->db->query('DELETE FROM tbl_logins_token where tbl_logins_token.token=:token');
+        //Bind value
+        $this->db->bind(':token', $token);
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     //Find user by email. Email is passed in by the Controller.
     public function findUserByEmail($email)
     {

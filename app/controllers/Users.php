@@ -185,6 +185,7 @@ class Users extends Controller
         unset($_SESSION['user_id']);
         unset($_SESSION['username']);
         unset($_SESSION['email']);
+        $this->userModel->deleteToken($_COOKIE['token']);
         setcookie('token', '', time() - 7 * 24 * 60 * 60, '/');
         session_destroy();
         header('location:' . URLROOT . '/users/index');
