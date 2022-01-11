@@ -8,7 +8,6 @@ $helper = new Helper();
     if ($helper->authenToken() == null) {
         header('location:' . URLROOT . '/users/login');
     }
-    echo $_SESSION['user_id'];
     ?>
     <div class="container">
         <div class="panel panel-primary">

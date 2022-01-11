@@ -6,9 +6,7 @@ $helper = new Helper();
 <body>
 
     <?php
-    // if (isLoggedIn()) {
-    //     header('location:' . URLROOT . '/pages/index');
-    // }
+
     if ($helper->authenToken() != null) {
         header('location:' . URLROOT . '/pages/index');
     }
@@ -17,11 +15,6 @@ $helper = new Helper();
     <form action="<?php echo URLROOT; ?>/users/login" method="post">
 
         <div class="container">
-            <?php if ($helper->authenToken() == null)
-                echo 'hung';
-            else echo $_SESSION['user_id'];
-            echo $_SESSION['user_id'];
-            ?>
             <h2>Login Form</h2>
             <div class="imgcontainer">
                 <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Avatar" class="avatar">

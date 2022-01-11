@@ -18,11 +18,6 @@ class Helper extends Controller
 
     function authenToken()
     {
-        // if (isset($_SESSION['user_id'])) {
-        //     return $_SESSION['user'];
-        // }
-
-
         if (isset($_SESSION['user_id'])) {
             return $_SESSION['user_id'];
         } else {
@@ -32,23 +27,15 @@ class Helper extends Controller
                 //     return null;
                 // }
                 $result = $this->userModel->findUserByToken($token);
-                // return 1;
+
                 if ($result != null) {
                     $_SESSION['user_id'] = $result->user_id;
 
                     return $result->user_id;
-                    // return 1;
                 }
             }
-            // return false;
         }
 
         return null;
-
-
-
-
-        // $sql    = "select users.* from users, login_tokens where users.id = login_tokens.id_user and login_tokens.token = '$token'";
-
     }
 }
