@@ -74,18 +74,20 @@ class Users extends Controller
             'email' => '',
             'password' => '',
             'confirmPassword' => '',
-            'usernamelError' => '',
+            'fileName' => '', 
+            'usernameError' => '',
             'emailError' => '',
             'passwordError' => '',
-            'confirmPasswordlError' => ''
+            'confirmPasswordError' => '',
+            'fileError' => '',
+            'created_at' => '',
+            'updated_at' => ''
         ];
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Process form
             // Sanitize POST data
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-            $file = $_FILES['file'];
 
             $data = [
                 'username' => trim($_POST['username']),
@@ -99,8 +101,7 @@ class Users extends Controller
                 'confirmPasswordError' => '',
                 'fileError' => '',
                 'created_at' => '',
-                'updated_at' => '',
-                'flag' => ''
+                'updated_at' => ''
             ];
 
             date_default_timezone_set('Asia/Bangkok');

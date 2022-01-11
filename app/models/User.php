@@ -34,9 +34,9 @@ class User
     
     public function register($data)
     {
-        $this->db->query('INSERT INTO tbl_users ( user_email, user_password, user_name, user_avatar, created_at, updated_at)
+        $this->db->query('INSERT INTO tbl_users ( user_email, user_password, user_name,
+                user_avatar, created_at, updated_at)
                 VALUES( :email, :password,:username, :fileName, :created_at, :updated_at)');
-
         //Bind values
         $this->db->bind(':username', $data['username']);
         $this->db->bind(':email', $data['email']);
@@ -44,8 +44,6 @@ class User
         $this->db->bind(':fileName', $data['fileName']);
         $this->db->bind(':created_at', $data['created_at']);
         $this->db->bind(':updated_at', $data['updated_at']);
-
-
         //Execute function
         if ($this->db->execute()) {
             return true;

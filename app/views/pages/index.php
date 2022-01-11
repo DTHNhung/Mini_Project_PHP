@@ -40,10 +40,14 @@ require APPROOT . '/views/includes/head.php';
                             <td><img src="<?php echo URLROOT . '/public/img/avatar/' . $row['user_avatar']; ?>" 
                                 width='56px'></td>
                             <td>
-                                <button class="btn btn-warning">Edit</button>
+                                <button class="btn btn-warning">
+                                    <a href="<?php echo URLROOT . '/pages/edit/' . $row['user_name']; ?>">Edit</a>
+                                </button>
                             </td>
                             <td>
-                                <button class="btn btn-danger">Delete</button>
+                                <button class="btn btn-danger">
+                                    <a href="<?php echo URLROOT . '/pages/delete/' . $row['user_name']; ?>">Delete</a>
+                                </button>
                             </td>
                         </tr>
                         <?php

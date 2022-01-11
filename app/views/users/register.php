@@ -1,6 +1,5 @@
 <?php
 require APPROOT . '/views/includes/head.php';
-if (isset($data['flag'])) echo $data['flag'];
 ?>
 <form action="<?php echo URLROOT; ?>/users/register" method="post" enctype="multipart/form-data">
     <div class="container">
