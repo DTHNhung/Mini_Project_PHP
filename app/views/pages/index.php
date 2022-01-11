@@ -45,7 +45,7 @@ $helper = new Helper();
                                     </td>
                                     <td>
                                         <button class="btn btn-danger">
-                                            <a href="<?php echo URLROOT . '/pages/delete/' . '?username=' . $row['user_name']; ?>" onclick=" return confirm('Are you sure you want to delete this item?');">Delete</a>
+                                            <a href="<?php echo URLROOT . '/pages/delete/' . $row['user_name']; ?>" onclick=" return confirm('Are you sure you want to delete this item?');">Delete</a>
                                         </button>
                                     </td>
                                 </tr>
