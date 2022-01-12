@@ -53,9 +53,10 @@ class Controller extends Core
             $error = 'Please enter password.';
         } elseif (strlen($password) < 6 || strlen($password) > 100) {
             $error = 'Password must be between 6 and 100 characters in length.';
-        } elseif (preg_match($password, $passwordValidation)) {
-            $error = 'Password must be have at least one letter and one number';
-        }
+        } 
+        // elseif (preg_match($password, $passwordValidation)) {
+        //     $error = 'Password must be have at least one letter and one number';
+        // }
         return $error;
     }
 
